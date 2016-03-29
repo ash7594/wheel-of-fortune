@@ -1,0 +1,48 @@
+var canvas = document.getElementById("canvas"),
+	ctx = canvas.getContext("2d");
+
+var windowWidth = window.innerWidth * 0.98,
+	windowHeight = window.innerHeight * 0.96,
+	polySide = 10,
+	windowCX = windowWidth/2,
+	windowCY = windowHeight/2,
+	windowA = 0;
+
+canvas.width = windowWidth;
+canvas.height = windowHeight;
+
+function polygonPar() {
+    this.x = windowCX;
+    this.y = windowCY;
+    this.r = 200; //5 * entity.r;
+    this.c = "rgba(0,0,0,1)"; //lineColour
+    this.w = 3;  //linewidth
+}
+
+var wheel = new polygonPar();
+
+function polygonRender() {
+	for (var j=0; j<polySide; j++) {
+		ctx.beginPath();
+		ctx.moveTo(windowCX, windowCY);
+		ctx.lineTo(
+				windowCX + wheel[i].r * Math.cos((windowA + j * 360 / polySide) * Math.PI / 180),
+				windowCY + wheel[i].r * Math.sin((windowA + j * 360 / polySide) * Math.PI / 180));
+		ctx.arc(windowCX, windowCY, wheel[i].r, (windowA + j * 360 / polySide) * Math.PI / 180, (windowA + (j+1) * 360 / polySide) * Math.PI / 180);
+		ctx.lineTo(windowCX, windowCY);
+		ctx.strokeStyle = wheel[i].c;
+		ctx.lineWidth = wheel[i].w;
+		ctx.stroke();
+		ctx.fillStyle = (j%2)?"rgb(0,0,0)":"rgb(255,255,255)";
+		ctx.fill();
+		ctx.closePath();
+	}
+}
+
+function render() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    polygonRender();
+    windowA++;
+}
+
+setInterval(render,10);
