@@ -30,7 +30,20 @@ var arrowMaterial,
 var wheelSpinning = false,
     wheelStopped = true;
 
-//var particles = [];
+var texts = [
+	"counting",
+	"delta",
+	"colors",
+	"browns",
+	"counting",
+	"delta",
+	"colors",
+	"browns",
+	"counting",
+	"delta",
+	"colors",
+	"browns"
+];
 
 window.onload = function() {
     initDrawingCanvas();
@@ -259,7 +272,15 @@ Wheel.prototype = {
 //            ctx.closePath();
 //            ctx.fill();
 //        }
-//
+
+		ctx.rotate((360/12 * Math.PI / 180) / 2);
+		ctx.font = "20px Arial";
+		for (var i = 0; i < this.segments; i++) {
+			ctx.fillText(texts[i], 70, 5);
+			ctx.rotate(360/12 * Math.PI / 180);
+		}
+		ctx.rotate((360/12 * Math.PI / 180) / 2);
+
         ctx.fillStyle = '#000000';
 
         this.pPinPositions.forEach(function(p) {
