@@ -1,8 +1,8 @@
 const TWO_PI = Math.PI * 2;
 const HALF_PI = Math.PI * 0.5;
 // canvas settings
-var viewWidth = window.innerWidth * 0.98,
-    viewHeight = window.innerHeight * 0.96,
+var viewWidth = window.innerWidth,
+    viewHeight = window.innerHeight,
     viewCenterX = viewWidth * 0.5,
     viewCenterY = viewHeight * 0.5,
     drawingCanvas = document.getElementById("canvas"),
@@ -10,7 +10,7 @@ var viewWidth = window.innerWidth * 0.98,
     timeStep = (1/60),
     time = 0;
 
-var ppm = 24, // pixels per meter
+var ppm = (viewWidth < viewHeight) ? viewWidth/30 : viewHeight/30,
     physicsWidth = viewWidth / ppm,
     physicsHeight = viewHeight / ppm,
     physicsCenterX = physicsWidth * 0.5,
@@ -51,6 +51,10 @@ window.onload = function() {
 
     requestAnimationFrame(loop);
 };
+
+window.addEventListener("resize", function() {
+	location.reload();
+});
 
 function initDrawingCanvas() {
     drawingCanvas.width = viewWidth;
@@ -263,7 +267,8 @@ Wheel.prototype = {
 
         ctx.rotate(-this.body.angle);
 
-		ctx.drawImage(colorwheel, -(this.pRadius + 24), -(this.pRadius + 24), 2*(this.pRadius + 24), 2*(this.pRadius + 24));
+		var offset = 12;
+		ctx.drawImage(colorwheel, -(this.pRadius+offset), -(this.pRadius+offset), 2*(this.pRadius+offset), 2*(this.pRadius+offset));
 //        for (var i = 0; i < this.segments; i++) {
 //            ctx.fillStyle = (i % 2 === 0) ? '#BD4932' : '#FFFAD5';
 //            ctx.beginPath();
@@ -274,9 +279,9 @@ Wheel.prototype = {
 //        }
 
 		ctx.rotate((360/12 * Math.PI / 180) / 2);
-		ctx.font = "20px Arial";
+		ctx.font = ppm + "px Arial";
 		for (var i = 0; i < this.segments; i++) {
-			ctx.fillText(texts[i], 70, 5);
+			ctx.fillText(texts[i], this.pRadius/3, this.pRadius/25);
 			ctx.rotate(360/12 * Math.PI / 180);
 		}
 		ctx.rotate((360/12 * Math.PI / 180) / 2);
