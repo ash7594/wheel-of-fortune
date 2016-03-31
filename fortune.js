@@ -10,7 +10,7 @@ var viewWidth = window.innerWidth,
     timeStep = (1/60),
     time = 0;
 
-var ppm = (viewWidth < viewHeight) ? viewWidth/30 : viewHeight/30,
+var ppm = (viewWidth < viewHeight) ? viewWidth/25 : viewHeight/25,
     physicsWidth = viewWidth / ppm,
     physicsHeight = viewHeight / ppm,
     physicsCenterX = physicsWidth * 0.5,
@@ -61,10 +61,73 @@ function initDrawingCanvas() {
     drawingCanvas.height = viewHeight;
     ctx = drawingCanvas.getContext('2d');
 
-    drawingCanvas.addEventListener('mousemove', updateMouseBodyPosition);
-    drawingCanvas.addEventListener('mousedown', checkStartDrag);
-    drawingCanvas.addEventListener('mouseup', checkEndDrag);
-    drawingCanvas.addEventListener('mouseout', checkEndDrag);
+	if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/.test(navigator.userAgent) ) {
+		alert("yo");
+		console.log("mobile");
+    	drawingCanvas.addEventListener('touchmove', touch_updateMouseBodyPosition, false);
+    	drawingCanvas.addEventListener('touchstart', touch_checkStartDrag, false);
+    	drawingCanvas.addEventListener('touchend', touch_checkEndDrag, false);
+    	drawingCanvas.addEventListener('touchcancel', touch_checkEndDrag, false);
+	} else {
+		console.log("desktop");
+		drawingCanvas.addEventListener('mousemove', updateMouseBodyPosition);
+		drawingCanvas.addEventListener('mousedown', checkStartDrag);
+		drawingCanvas.addEventListener('mouseup', checkEndDrag);
+		drawingCanvas.addEventListener('mouseout', checkEndDrag);
+	}
+}
+
+function touch_updateMouseBodyPosition(e) {
+	e.preventDefault();
+    var p = touch_getPhysicsCoord(e.changedTouches[0]);
+    mouseBody.position[0] = p.x;
+    mouseBody.position[1] = p.y;
+}
+
+function touch_checkStartDrag(e) {
+	e.preventDefault();
+	var touches = e.changedTouches;
+	for (var j=0; j<touches.length; j++) {
+		var touch = touches[j];
+		var p = touch_getPhysicsCoord(touch);
+		mouseBody.position[0] = p.x;
+		mouseBody.position[1] = p.y;
+
+		if (world.hitTest(mouseBody.position, [wheel.body])[0]) {
+
+			mouseConstraint = new p2.RevoluteConstraint(mouseBody, wheel.body, {
+				worldPivot:mouseBody.position,
+							collideConnected:false
+			});
+
+			world.addConstraint(mouseConstraint);
+			break;
+		}
+	}
+
+    if (wheelSpinning === true) {
+        wheelSpinning = false;
+        wheelStopped = true;
+    }
+}
+
+function touch_checkEndDrag(e) {
+	e.preventDefault();
+    if (mouseConstraint) {
+        world.removeConstraint(mouseConstraint);
+        mouseConstraint = null;
+
+        if (wheelSpinning === false && wheelStopped === true) {
+            if ( Math.abs(wheel.body.angularVelocity) > 7.5) {
+                wheelSpinning = true;
+                wheelStopped = false;
+                console.log('good spin');
+            }
+            else {
+                console.log('sissy');
+            }
+        }
+    }
 }
 
 function updateMouseBodyPosition(e) {
@@ -74,6 +137,7 @@ function updateMouseBodyPosition(e) {
 }
 
 function checkStartDrag(e) {
+	console.log(mouseBody.position);
     if (world.hitTest(mouseBody.position, [wheel.body])[0]) {
 
         mouseConstraint = new p2.RevoluteConstraint(mouseBody, wheel.body, {
@@ -112,6 +176,14 @@ function getPhysicsCoord(e) {
     var rect = drawingCanvas.getBoundingClientRect(),
         x = (e.clientX - rect.left) / ppm,
         y = physicsHeight - (e.clientY - rect.top) / ppm;
+
+    return {x:x, y:y};
+}
+
+function touch_getPhysicsCoord(e) {
+    var rect = drawingCanvas.getBoundingClientRect(),
+        x = (e.pageX - rect.left) / ppm,
+        y = physicsHeight - (e.pageY - rect.top) / ppm;
 
     return {x:x, y:y};
 }
