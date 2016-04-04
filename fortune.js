@@ -62,7 +62,7 @@ function initDrawingCanvas() {
     ctx = drawingCanvas.getContext('2d');
 
 	if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/.test(navigator.userAgent) ) {
-		alert("yo");
+		//alert("yo");
 		console.log("mobile");
     	drawingCanvas.addEventListener('touchmove', touch_updateMouseBodyPosition, false);
     	drawingCanvas.addEventListener('touchstart', touch_checkStartDrag, false);
