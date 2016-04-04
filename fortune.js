@@ -249,7 +249,7 @@ function update() {
         wheelStopped = true;
         wheelSpinning = false;
 
-        wheel.body.angularVelocity = 0;
+        //wheel.body.angularVelocity = 0;
 
         if (win) {
             //spawnPartices();
