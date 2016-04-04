@@ -62,7 +62,7 @@ function initDrawingCanvas() {
     ctx = drawingCanvas.getContext('2d');
 
 	if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/.test(navigator.userAgent) ) {
-		alert("yo");
+		//alert("yo");
 		console.log("mobile");
     	drawingCanvas.addEventListener('touchmove', touch_updateMouseBodyPosition, false);
     	drawingCanvas.addEventListener('touchstart', touch_checkStartDrag, false);
@@ -387,7 +387,7 @@ function Arrow(x, y, w, h) {
 }
 Arrow.prototype = {
     createBody:function() {
-        this.body = new p2.Body({mass:1, position:[this.x, this.y]});
+        this.body = new p2.Body({mass:0.5, position:[this.x, this.y]});
         this.body.addShape(this.createArrowShape());
 
         var axis = new p2.Body({position:[this.x, this.y]});
