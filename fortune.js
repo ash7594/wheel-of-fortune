@@ -395,6 +395,7 @@ Arrow.prototype = {
             worldPivot:[this.x, this.y]
         });
         constraint.collideConnected = false;
+		constraint.setLimits(-HALF_PI, HALF_PI);
 
         var left = new p2.Body({position:[this.x - 2, this.y]});
         var right = new p2.Body({position:[this.x + 2, this.y]});
@@ -447,6 +448,7 @@ Arrow.prototype = {
         ctx.translate(this.pX, this.pY);
         ctx.rotate(-this.body.angle);
 
+		ctx.drawImage(colorarrow, -this.h/3*ppm, -this.h/4*ppm, 1.9*this.h/3*ppm, this.h*ppm);
 //        ctx.fillStyle = '#401911';
 //
 //        ctx.beginPath();
@@ -456,7 +458,6 @@ Arrow.prototype = {
 //        ctx.lineTo(this.pVerts[3][0], this.pVerts[3][1]);
 //        ctx.closePath();
 //        ctx.fill();
-		ctx.drawImage(colorarrow, -this.h/2*ppm, -this.h/7*ppm, this.h*ppm, this.h*ppm);
 
         ctx.restore();
     }
