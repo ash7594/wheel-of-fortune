@@ -205,12 +205,12 @@ function initPhysics() {
         wheelX = physicsCenterX,
         wheelY = physicsCenterY,
         arrowX = wheelX,
-        arrowY = wheelY + wheelRadius + 2;
+        arrowY = wheelY + wheelRadius + 0.5;
 
     wheel = new Wheel(wheelX, wheelY, wheelRadius, 12, 0.25, 7.5);
     wheel.body.angle = (Math.PI / 32.5);
     wheel.body.angularVelocity = 5;
-    arrow = new Arrow(arrowX, arrowY, 2, 4);
+    arrow = new Arrow(arrowX, arrowY, 2/3, 4/3);
     mouseBody = new p2.Body();
 
     world.addBody(mouseBody);
