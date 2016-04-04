@@ -387,7 +387,7 @@ function Arrow(x, y, w, h) {
 }
 Arrow.prototype = {
     createBody:function() {
-        this.body = new p2.Body({mass:1, position:[this.x, this.y]});
+        this.body = new p2.Body({mass:0.1, position:[this.x, this.y]});
         this.body.addShape(this.createArrowShape());
 
         var axis = new p2.Body({position:[this.x, this.y]});
