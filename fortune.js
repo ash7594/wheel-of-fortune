@@ -209,7 +209,7 @@ function initPhysics() {
         wheelX = physicsCenterX,
         wheelY = physicsCenterY,
         arrowX = wheelX,
-        arrowY = wheelY + wheelRadius + 0.5;
+        arrowY = wheelY + wheelRadius + 0.7;
 
     wheel = new Wheel(wheelX, wheelY, wheelRadius, 16, 0.2, 7.75);
     wheel.body.angle = (Math.PI / 32.5);
