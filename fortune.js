@@ -42,6 +42,10 @@ var texts = [
 	"counting",
 	"delta",
 	"colors",
+	"browns",
+	"counting",
+	"delta",
+	"colors",
 	"browns"
 ];
 
@@ -207,7 +211,7 @@ function initPhysics() {
         arrowX = wheelX,
         arrowY = wheelY + wheelRadius + 0.5;
 
-    wheel = new Wheel(wheelX, wheelY, wheelRadius, 12, 0.25, 7.5);
+    wheel = new Wheel(wheelX, wheelY, wheelRadius, 16, 0.2, 7.75);
     wheel.body.angle = (Math.PI / 32.5);
     wheel.body.angularVelocity = 5;
     arrow = new Arrow(arrowX, arrowY, 2/3, 4/3);
@@ -350,21 +354,21 @@ Wheel.prototype = {
 //            ctx.fill();
 //        }
 
-		ctx.rotate((360/12 * Math.PI / 180) / 2);
-		ctx.font = ppm + "px Arial";
+		ctx.rotate((360/16 * Math.PI / 180) / 2);
+		ctx.font = (ppm/1.25) + "px Arial";
 		for (var i = 0; i < this.segments; i++) {
 			ctx.fillText(texts[i], this.pRadius/3, this.pRadius/25);
-			ctx.rotate(360/12 * Math.PI / 180);
+			ctx.rotate(360/16 * Math.PI / 180);
 		}
-		ctx.rotate((360/12 * Math.PI / 180) / 2);
-
-        ctx.fillStyle = '#000000';
-
-        this.pPinPositions.forEach(function(p) {
-            ctx.beginPath();
-            ctx.arc(p[0], p[1], this.pPinRadius, 0, TWO_PI);
-            ctx.fill();
-        }, this);
+//		ctx.rotate((360/16 * Math.PI / 180) / 2);
+//
+//        ctx.fillStyle = '#000000';
+//
+//        this.pPinPositions.forEach(function(p) {
+//            ctx.beginPath();
+//            ctx.arc(p[0], p[1], this.pPinRadius, 0, TWO_PI);
+//            ctx.fill();
+//        }, this);
 
         ctx.restore();
     }
