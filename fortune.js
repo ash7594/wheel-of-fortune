@@ -42,6 +42,10 @@ var texts = [
 	"counting",
 	"delta",
 	"colors",
+	"browns",
+	"counting",
+	"delta",
+	"colors",
 	"browns"
 ];
 
@@ -205,39 +209,18 @@ function initPhysics() {
         wheelX = physicsCenterX,
         wheelY = physicsCenterY,
         arrowX = wheelX,
-        arrowY = wheelY + wheelRadius + 2;
+        arrowY = wheelY + wheelRadius + 0.5;
 
-    wheel = new Wheel(wheelX, wheelY, wheelRadius, 12, 0.25, 7.5);
+    wheel = new Wheel(wheelX, wheelY, wheelRadius, 16, 0.2, 7.75);
     wheel.body.angle = (Math.PI / 32.5);
     wheel.body.angularVelocity = 5;
-    arrow = new Arrow(arrowX, arrowY, 2, 4);
+    arrow = new Arrow(arrowX, arrowY, 2/3, 4/3);
     mouseBody = new p2.Body();
 
     world.addBody(mouseBody);
 }
 
-//function spawnPartices() {
-//    for (var i = 0; i < 200; i++) {
-//        var p0 = new Point(viewCenterX, viewCenterY - 64);
-//        var p1 = new Point(viewCenterX, 0);
-//        var p2 = new Point(Math.random() * viewWidth, Math.random() * viewCenterY);
-//        var p3 = new Point(Math.random() * viewWidth, viewHeight + 64);
-//
-//        particles.push(new Particle(p0, p1, p2, p3));
-//    }
-//}
-
 function update() {
-//    particles.forEach(function(p) {
-//        p.update();
-//        if (p.complete) {
-//            particles.splice(particles.indexOf(p), 1);
-//        }
-//    });
-
-    // p2 does not support continuous collision detection :(
-    // but stepping twice seems to help
-    // considering there are only a few bodies, this is ok for now.
     world.step(timeStep * 0.5);
     world.step(timeStep * 0.5);
 
@@ -249,7 +232,7 @@ function update() {
         wheelStopped = true;
         wheelSpinning = false;
 
-        wheel.body.angularVelocity = 0;
+        //wheel.body.angularVelocity = 0;
 
         if (win) {
             //spawnPartices();
@@ -258,15 +241,11 @@ function update() {
 }
 
 function draw() {
-    // ctx.fillStyle = '#fff';
     ctx.clearRect(0, 0, viewWidth, viewHeight);
 
     wheel.draw();
     arrow.draw();
 
-//    particles.forEach(function(p) {
-//        p.draw();
-//    });
 }
 
 function loop() {
@@ -341,30 +320,13 @@ Wheel.prototype = {
 
 		var offset = 12;
 		ctx.drawImage(colorwheel, -(this.pRadius+offset), -(this.pRadius+offset), 2*(this.pRadius+offset), 2*(this.pRadius+offset));
-//        for (var i = 0; i < this.segments; i++) {
-//            ctx.fillStyle = (i % 2 === 0) ? '#BD4932' : '#FFFAD5';
-//            ctx.beginPath();
-//            ctx.arc(0, 0, this.pRadius, i * this.deltaPI, (i + 1) * this.deltaPI);
-//            ctx.lineTo(0, 0);
-//            ctx.closePath();
-//            ctx.fill();
-//        }
 
-		ctx.rotate((360/12 * Math.PI / 180) / 2);
-		ctx.font = ppm + "px Arial";
+		ctx.rotate((360/16 * Math.PI / 180) / 2);
+		ctx.font = (ppm/1.25) + "px Arial";
 		for (var i = 0; i < this.segments; i++) {
 			ctx.fillText(texts[i], this.pRadius/3, this.pRadius/25);
-			ctx.rotate(360/12 * Math.PI / 180);
+			ctx.rotate(360/16 * Math.PI / 180);
 		}
-		ctx.rotate((360/12 * Math.PI / 180) / 2);
-
-        ctx.fillStyle = '#000000';
-
-        this.pPinPositions.forEach(function(p) {
-            ctx.beginPath();
-            ctx.arc(p[0], p[1], this.pPinRadius, 0, TWO_PI);
-            ctx.fill();
-        }, this);
 
         ctx.restore();
     }
@@ -449,15 +411,6 @@ Arrow.prototype = {
         ctx.rotate(-this.body.angle);
 
 		ctx.drawImage(colorarrow, -this.h/3*ppm, -this.h/4*ppm, 1.9*this.h/3*ppm, this.h*ppm);
-//        ctx.fillStyle = '#401911';
-//
-//        ctx.beginPath();
-//        ctx.moveTo(this.pVerts[0][0], this.pVerts[0][1]);
-//        ctx.lineTo(this.pVerts[1][0], this.pVerts[1][1]);
-//        ctx.lineTo(this.pVerts[2][0], this.pVerts[2][1]);
-//        ctx.lineTo(this.pVerts[3][0], this.pVerts[3][1]);
-//        ctx.closePath();
-//        ctx.fill();
 
         ctx.restore();
     }
